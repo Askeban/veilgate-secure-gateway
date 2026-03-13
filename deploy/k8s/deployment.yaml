@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secure-mcp-gateway
+  namespace: mcp-system
+  labels:
+    app: secure-mcp-gateway
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: secure-mcp-gateway
+  template:
+    metadata:
+      labels:
+        app: secure-mcp-gateway
+    spec:
+      containers:
+        - name: gateway
+          image: secure-mcp-gateway:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: http
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/mcp
+      volumes:
+        - name: config-volume
+          configMap:
+            name: secure-mcp-gateway-config

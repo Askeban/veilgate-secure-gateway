@@ -1,0 +1,55 @@
+services:
+  gateway:
+    build:
+      context: ../
+      dockerfile: deploy/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SMG_SERVER_ADDR=:8080
+      - SMG_LOG_LEVEL=debug
+      - SMG_LOG_FORMAT=json
+    volumes:
+      # Mount config if needed, or rely on image copy
+      # - ../config.yaml:/app/config.yaml
+      - ../certs:/app/certs
+    networks:
+      - mcp-net
+
+  # OPA Policy Engine
+  opa:
+    image: openpolicyagent/opa:latest
+    ports:
+      - "8181:8181"
+    # Run in server mode
+    command: ["run", "--server", "--addr", ":8181"]
+    networks:
+      - mcp-net
+
+  # Example: Adapter "Sitting" next to the Gateway
+  # This container runs the "filesystem" CLI tool but exposes it via HTTP
+  # Adapter 1: Project Alpha (Filesystem)
+  fs-adapter-1:
+    build:
+      context: ../
+      dockerfile: deploy/Adapter.Dockerfile
+    command: ["--cmd", "npx", "--args", "-y @modelcontextprotocol/server-filesystem /tmp"]
+    ports:
+      - "9091:9090"
+    networks:
+      - mcp-net
+
+  # Adapter 2: Project Beta (Filesystem)
+  fs-adapter-2:
+    build:
+      context: ../
+      dockerfile: deploy/Adapter.Dockerfile
+    command: ["--cmd", "npx", "--args", "-y @modelcontextprotocol/server-filesystem /tmp"]
+    ports:
+      - "9092:9090"
+    networks:
+      - mcp-net
+
+networks:
+  mcp-net:
+    driver: bridge

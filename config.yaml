@@ -1,0 +1,58 @@
+server:
+  addr: ":8080"
+  mtls: false
+  sse_enabled: true
+  aggregation_enabled: true
+  
+  # Policy Engine: "local" (policy.json) or "opa" (Remote OPA)
+  policy_type: "opa"
+  opa:
+    server_url: "http://opa:8181/v1/data/mcp/authz/allow"
+
+  # DLP Rules (configurable patterns for input blocking and output redaction)
+  dlp_rules_path: "dlp_rules.json"
+
+  # Audit Log (in addition to stdout)
+  audit:
+    file_path: "/var/log/mcp-audit.jsonl"
+
+  rate_limit:
+    default_rps: 10
+    default_burst: 20
+
+  redis:
+    enabled: true
+    addr: "localhost:6379"
+    db: 0
+    password: ""
+
+log:
+  level: "debug"
+  format: "json"
+
+  # Example: Unauthenticated local adapter
+  - id: "fs-1"
+    base_url: "http://fs-adapter-1:9090"
+    auth_type: "none"
+
+  # Example: Remote Third-Party Server with Service Account Token (Env Variable Injection)
+  - id: "github-remote"
+    base_url: "https://api.githubcopilot.com/mcp"
+    auth_type: "bearer"
+    auth:
+      token: "${GITHUB_SERVICE_PAT}" # Secure Gateway injects its own token
+
+  # Example: Internal Network Server with Static API Key
+  - id: "internal-netskope"
+    base_url: "http://netskope-mcp:3000"
+    auth_type: "api-key"
+    auth:
+      header: "x-api-key"
+      key: "${NETSKOPE_INTERNAL_SECRET}"
+
+  # Example: Remote Third-Party Server with User Token Pass-Through
+  - id: "github-user-context"
+    base_url: "https://api.githubcopilot.com/mcp"
+    auth_type: "forward"
+    auth:
+      header: "Authorization" # Gateway takes 'Authorization' from Agent Request and forwards it

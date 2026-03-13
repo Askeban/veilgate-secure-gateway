@@ -1,0 +1,32 @@
+# Binaries
+gateway
+adapter
+
+# Certificates
+certs/
+
+# Go
+*.exe
+*.test
+*.out
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Dependencies
+vendor/
+
+# Environment Variables
+.env
+.env.local
+
+# OS specifics
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDEs
+.idea/
+.vscode/
+*.swp

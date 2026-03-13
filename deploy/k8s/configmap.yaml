@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: secure-mcp-gateway-config
+  namespace: mcp-system
+data:
+  config.yaml: |
+    server:
+      addr: ":8080"
+      mtls: false
+      sse_enabled: true
+      aggregation_enabled: true
+      
+      policy_type: "opa"
+      opa:
+        server_url: "http://opa-service:8181/v1/data/mcp/authz/allow"
+
+      dlp_rules_path: "/etc/mcp/dlp_rules.json"
+
+      rate_limit:
+        default_rps: 50
+        default_burst: 100
+
+      redis:
+        enabled: true
+        addr: "redis-master:6379"
+        db: 0
+        password: ""
+
+    log:
+      level: "info"
+      format: "json"
+
+    upstreams:
+      # Example Upstream
+      - id: "demo-mcp"
+        base_url: "http://demo-upstream.mcp-system.svc.cluster.local:9090"
+        auth_type: "none"
+
+  dlp_rules.json: |
+    {
+      "input_blocklist": [
+        "rm -rf",
+        "wget ",
+        "curl ",
+        "nmap"
+      ],
+      "output_redact_patterns": [
+        "sk-[a-zA-Z0-9]{20,}",
+        "ghp_[a-zA-Z0-9]{36}"
+      ],
+      "output_redact_replacement": "[REDACTED_BY_MCP_GATEWAY]"
+    }

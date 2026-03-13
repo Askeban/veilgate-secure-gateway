@@ -1,0 +1,20 @@
+{
+    "input_blocklist": [
+        "rm -rf",
+        "wget ",
+        "curl ",
+        ";",
+        "DROP TABLE",
+        "INSERT INTO",
+        "UPDATE SET",
+        "DELETE FROM"
+    ],
+    "output_redact_patterns": [
+        "sk-[a-zA-Z0-9]{10,}",
+        "AKIA[A-Z0-9]{16}",
+        "ghp_[a-zA-Z0-9]{36}",
+        "glpat-[a-zA-Z0-9\\-]{20,}",
+        "xox[bpoas]-[a-zA-Z0-9\\-]{10,}"
+    ],
+    "output_redact_replacement": "[REDACTED]"
+}

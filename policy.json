@@ -1,0 +1,13 @@
+{
+  "roles": {
+    "admin": {
+      "allow_tools": ["demo-tool", "echo"],
+      "deny_functions": []
+    }
+  },
+  "bindings": {
+    "api_keys": {
+      "secret-admin-key": "admin"
+    }
+  }
+}

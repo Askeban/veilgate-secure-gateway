@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Veilgate by Shyld — Enterprise Security for AI Agents</title>
+    <meta name="description"
+        content="Veilgate by Shyld provides zero-trust security, real-time DLP, and full audit trails for AI agent workflows. Protect your enterprise tools from unauthorized AI access." />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#833cf6",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#171022",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at 50% 50%, rgba(131, 60, 246, 0.15) 0%, transparent 70%);
+        }
+
+        .glass-card {
+            background: rgba(49, 34, 73, 0.2);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(131, 60, 246, 0.2);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .float-anim {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .form-success {
+            display: none;
+        }
+
+        .form-success.active {
+            display: flex;
+        }
+
+        .form-container.submitted form {
+            display: none;
+        }
+
+        .form-container.submitted .form-success {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 selection:bg-primary selection:text-white">
+
+    <!-- Sticky Navigation -->
+    <nav
+        class="sticky top-0 z-50 w-full border-b border-primary/10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-3xl">shield</span>
+                    <div class="flex flex-col leading-none">
+                        <span class="text-xl font-bold tracking-tight">Shyld</span>
+                        <span class="text-[10px] uppercase tracking-widest text-primary font-semibold">Veilgate</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center gap-8">
+                    <a class="text-sm font-medium hover:text-primary transition-colors" href="#how-it-works">How It
+                        Works</a>
+                    <a class="text-sm font-medium hover:text-primary transition-colors" href="#use-cases">Use Cases</a>
+                    <a class="text-sm font-medium hover:text-primary transition-colors"
+                        href="#architecture">Architecture</a>
+                    <a class="text-sm font-medium hover:text-primary transition-colors" href="#contact">Contact</a>
+                    <a href="#register"
+                        class="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-lg text-sm font-bold transition-all shadow-lg shadow-primary/20">
+                        Register Interest
+                    </a>
+                </div>
+                <!-- Mobile Menu Toggle -->
+                <div class="md:hidden">
+                    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"
+                        class="cursor-pointer">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden pb-4 space-y-3">
+                <a class="block text-sm font-medium hover:text-primary" href="#how-it-works">How It Works</a>
+                <a class="block text-sm font-medium hover:text-primary" href="#use-cases">Use Cases</a>
+                <a class="block text-sm font-medium hover:text-primary" href="#architecture">Architecture</a>
+                <a class="block text-sm font-medium hover:text-primary" href="#contact">Contact</a>
+                <a href="#register"
+                    class="block text-center bg-primary text-white px-5 py-2 rounded-lg text-sm font-bold">Register
+                    Interest</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-20 pb-32 overflow-hidden hero-gradient">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8 uppercase tracking-widest">
+                <span class="relative flex h-2 w-2">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                </span>
+                Now in Private Beta
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black tracking-tight mb-6 max-w-4xl mx-auto leading-[1.1]">
+                Your AI Agents Are Talking to Your APIs. <span class="text-primary">Who's Watching?</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                Veilgate is the enterprise security layer between AI Agents and your backend tools. Zero-trust
+                authentication, real-time DLP, and full audit trails — so your AI workflows stay fast, compliant, and
+                leak-proof.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20">
+                <a href="#register"
+                    class="w-full sm:w-auto px-8 py-4 bg-primary text-white font-bold rounded-xl text-lg hover:scale-105 transition-transform shadow-xl shadow-primary/30 text-center">
+                    Register Your Interest
+                </a>
+                <a href="#how-it-works"
+                    class="w-full sm:w-auto px-8 py-4 bg-slate-200 dark:bg-primary/10 text-slate-900 dark:text-white font-bold rounded-xl text-lg hover:bg-primary/20 transition-colors border border-primary/20 text-center">
+                    See How It Works
+                </a>
+            </div>
+
+            <!-- Hero Visualization -->
+            <div class="relative max-w-5xl mx-auto">
+                <div class="grid grid-cols-3 items-center gap-4 md:gap-12">
+                    <!-- Left: AI Agents -->
+                    <div class="flex flex-col gap-4">
+                        <div class="glass-card p-4 rounded-xl flex items-center gap-3 fade-in float-anim"
+                            style="animation-delay: 0s">
+                            <span class="material-symbols-outlined text-primary">smart_toy</span>
+                            <span class="text-sm font-semibold">GitHub Copilot</span>
+                        </div>
+                        <div class="glass-card p-4 rounded-xl flex items-center gap-3 fade-in float-anim"
+                            style="animation-delay: 0.5s">
+                            <span class="material-symbols-outlined text-primary">auto_fix_high</span>
+                            <span class="text-sm font-semibold">Cursor</span>
+                        </div>
+                        <div class="glass-card p-4 rounded-xl flex items-center gap-3 fade-in float-anim"
+                            style="animation-delay: 1s">
+                            <span class="material-symbols-outlined text-primary">psychology</span>
+                            <span class="text-sm font-semibold">Custom Agents</span>
+                        </div>
+                    </div>
+                    <!-- Center: Gateway -->
+                    <div class="relative flex flex-col items-center justify-center py-10">
+                        <div class="absolute inset-0 bg-primary/20 blur-[80px] rounded-full"></div>
+                        <div
+                            class="relative z-10 w-24 h-24 md:w-32 md:h-32 bg-primary rounded-full flex items-center justify-center shadow-[0_0_50px_rgba(131,60,246,0.5)]">
+                            <span
+                                class="material-symbols-outlined text-white text-5xl md:text-6xl animate-pulse">security</span>
+                        </div>
+                        <div class="mt-4 text-primary font-bold tracking-widest text-xs uppercase">Veilgate Proxy</div>
+                    </div>
+                    <!-- Right: Backend Tools -->
+                    <div class="flex flex-col gap-4">
+                        <div class="glass-card p-4 rounded-xl flex items-center gap-3 fade-in float-anim"
+                            style="animation-delay: 0.3s">
+                            <span class="material-symbols-outlined text-blue-400">terminal</span>
+                            <span class="text-sm font-semibold">Internal APIs</span>
+                        </div>
+                        <div class="glass-card p-4 rounded-xl flex items-center gap-3 fade-in float-anim"
+                            style="animation-delay: 0.8s">
+                            <span class="material-symbols-outlined text-orange-400">database</span>
+                            <span class="text-sm font-semibold">DB Servers</span>
+                        </div>
+                        <div class="glass-card p-4 rounded-xl flex items-center gap-3 fade-in float-anim"
+                            style="animation-delay: 1.3s">
+                            <span class="material-symbols-outlined text-green-400">hub</span>
+                            <span class="text-sm font-semibold">Slack / Jira / GitHub</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Statement -->
+    <section class="py-24 bg-slate-50 dark:bg-background-dark/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-16">
+                <h2 class="text-3xl md:text-4xl font-black mb-4">The $4.2M Problem</h2>
+                <p class="text-slate-500 dark:text-slate-400 mb-2">Average cost of a data breach involving AI systems
+                    (IBM 2025)</p>
+                <div class="h-1.5 w-20 bg-primary rounded-full"></div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div
+                    class="glass-card p-8 rounded-2xl border-l-4 border-l-primary hover:translate-y-[-4px] transition-transform fade-in">
+                    <span class="material-symbols-outlined text-primary text-4xl mb-6">lock_open</span>
+                    <h3 class="text-xl font-bold mb-3">Credential Exposure</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">AI agents need API tokens to call
+                        tools. Today, those tokens live in prompts, config files, or agent memory — one leak away from a
+                        breach.</p>
+                </div>
+                <div
+                    class="glass-card p-8 rounded-2xl border-l-4 border-l-primary hover:translate-y-[-4px] transition-transform fade-in">
+                    <span class="material-symbols-outlined text-primary text-4xl mb-6">visibility_off</span>
+                    <h3 class="text-xl font-bold mb-3">No Visibility</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">Your SOC team has zero visibility into
+                        what tools AI agents are calling, what data they're accessing, or what they're sending back to
+                        the model.</p>
+                </div>
+                <div
+                    class="glass-card p-8 rounded-2xl border-l-4 border-l-primary hover:translate-y-[-4px] transition-transform fade-in">
+                    <span class="material-symbols-outlined text-primary text-4xl mb-6">rule_folder</span>
+                    <h3 class="text-xl font-bold mb-3">Compliance Gaps</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">SOC 2, HIPAA, and GDPR require audit
+                        trails and data controls. AI agent traffic today is a compliance blind spot.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-24" id="how-it-works">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-5xl font-black mb-6">How Veilgate Works</h2>
+                <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">A purpose-built security proxy that
+                    standardizes and secures the communication between modern AI agents and your infrastructure.</p>
+            </div>
+
+            <!-- Architecture Diagram -->
+            <div class="mb-24 p-8 glass-card rounded-3xl overflow-hidden border-primary/30">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-8 py-10">
+                    <div class="flex flex-col items-center gap-3">
+                        <div
+                            class="size-16 bg-slate-800 rounded-xl flex items-center justify-center border border-slate-700">
+                            <span class="material-symbols-outlined text-white">smart_toy</span>
+                        </div>
+                        <span class="text-xs font-bold uppercase tracking-widest opacity-60">AI Agents</span>
+                        <div class="text-sm font-medium">Copilot, Claude, GPT</div>
+                    </div>
+                    <div class="flex-1 h-px bg-gradient-to-r from-transparent via-primary to-transparent relative">
+                        <div
+                            class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary px-3 py-1 rounded-full text-[10px] text-white font-bold">
+                            mTLS</div>
+                    </div>
+                    <div class="flex flex-col items-center gap-3">
+                        <div
+                            class="size-24 bg-primary rounded-2xl flex items-center justify-center shadow-xl shadow-primary/40 ring-4 ring-primary/20">
+                            <span class="material-symbols-outlined text-white text-4xl">security</span>
+                        </div>
+                        <span class="text-sm font-bold text-primary">Veilgate Core</span>
+                    </div>
+                    <div class="flex-1 h-px bg-gradient-to-r from-transparent via-primary to-transparent relative">
+                        <div
+                            class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary px-3 py-1 rounded-full text-[10px] text-white font-bold">
+                            Policy + DLP</div>
+                    </div>
+                    <div class="flex flex-col items-center gap-3">
+                        <div
+                            class="size-16 bg-slate-800 rounded-xl flex items-center justify-center border border-slate-700">
+                            <span class="material-symbols-outlined text-white">dns</span>
+                        </div>
+                        <span class="text-xs font-bold uppercase tracking-widest opacity-60">Backend Servers</span>
+                        <div class="text-sm font-medium">MCP, Internal APIs</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6-Card Capabilities Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div
+                    class="p-6 rounded-xl border border-primary/10 bg-primary/5 hover:bg-primary/10 transition-colors fade-in">
+                    <span class="material-symbols-outlined text-primary mb-4 block text-3xl">verified_user</span>
+                    <h4 class="text-lg font-bold mb-2">Mutual TLS (mTLS)</h4>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Cryptographic identity verification for every
+                        agent connection. No certificate, no access. Period.</p>
+                </div>
+                <div
+                    class="p-6 rounded-xl border border-primary/10 bg-primary/5 hover:bg-primary/10 transition-colors fade-in">
+                    <span class="material-symbols-outlined text-primary mb-4 block text-3xl">policy</span>
+                    <h4 class="text-lg font-bold mb-2">Real-Time DLP</h4>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Streaming data loss prevention scans every
+                        response. API keys, secrets, PII — automatically redacted before reaching the AI agent.</p>
+                </div>
+                <div
+                    class="p-6 rounded-xl border border-primary/10 bg-primary/5 hover:bg-primary/10 transition-colors fade-in">
+                    <span class="material-symbols-outlined text-primary mb-4 block text-3xl">gavel</span>
+                    <h4 class="text-lg font-bold mb-2">Policy Engine (OPA)</h4>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Fine-grained, role-based access control.
+                        Define exactly which agents can call which tools using Open Policy Agent.</p>
+                </div>
+                <div
+                    class="p-6 rounded-xl border border-primary/10 bg-primary/5 hover:bg-primary/10 transition-colors fade-in">
+                    <span class="material-symbols-outlined text-primary mb-4 block text-3xl">key</span>
+                    <h4 class="text-lg font-bold mb-2">Dynamic Auth Injection</h4>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Backend API tokens are injected by the gateway
+                        at runtime from secure vaults. The AI agent never sees real credentials.</p>
+                </div>
+                <div
+                    class="p-6 rounded-xl border border-primary/10 bg-primary/5 hover:bg-primary/10 transition-colors fade-in">
+                    <span class="material-symbols-outlined text-primary mb-4 block text-3xl">history_edu</span>
+                    <h4 class="text-lg font-bold mb-2">Full Audit Trail</h4>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Every tool call, agent identity, and response
+                        hash — logged in structured JSON-L for your SIEM and compliance reporting.</p>
+                </div>
+                <div
+                    class="p-6 rounded-xl border border-primary/10 bg-primary/5 hover:bg-primary/10 transition-colors fade-in">
+                    <span class="material-symbols-outlined text-primary mb-4 block text-3xl">speed</span>
+                    <h4 class="text-lg font-bold mb-2">Production Resilience</h4>
+                    <p class="text-sm text-slate-600 dark:text-slate-400">Per-agent rate limiting, circuit breakers, and
+                        graceful SSE session draining. Enterprise-grade reliability built in.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="py-24 bg-slate-50 dark:bg-background-dark/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black mb-6">Veilgate vs. The Status Quo</h2>
+                <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Why purpose-built AI security matters
+                    more than traditional generic proxies.</p>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-separate border-spacing-0">
+                    <thead>
+                        <tr>
+                            <th class="py-6 px-6 text-sm font-bold uppercase tracking-widest opacity-60">Feature</th>
+                            <th
+                                class="py-6 px-6 text-sm font-bold uppercase tracking-widest text-primary bg-primary/5 rounded-t-2xl border-x border-t border-primary/20">
+                                Veilgate</th>
+                            <th class="py-6 px-6 text-sm font-bold uppercase tracking-widest opacity-60">Traditional
+                                Proxies</th>
+                            <th class="py-6 px-6 text-sm font-bold uppercase tracking-widest opacity-60">DIY / Manual
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-primary/10">
+                        <tr>
+                            <td class="py-5 px-6 font-semibold">Real-time AI DLP</td>
+                            <td class="py-5 px-6 bg-primary/5 border-x border-primary/20">
+                                <div class="flex items-center gap-2 text-emerald-400 font-bold"><span
+                                        class="material-symbols-outlined">check_circle</span> Built-in</div>
+                            </td>
+                            <td class="py-5 px-6 text-slate-500">Limited / No</td>
+                            <td class="py-5 px-6 text-slate-500">No</td>
+                        </tr>
+                        <tr>
+                            <td class="py-5 px-6 font-semibold">Dynamic Auth Injection</td>
+                            <td class="py-5 px-6 bg-primary/5 border-x border-primary/20">
+                                <div class="flex items-center gap-2 text-emerald-400 font-bold"><span
+                                        class="material-symbols-outlined">check_circle</span> Built-in</div>
+                            </td>
+                            <td class="py-5 px-6 text-slate-500">No</td>
+                            <td class="py-5 px-6 text-slate-500">Custom Code</td>
+                        </tr>
+                        <tr>
+                            <td class="py-5 px-6 font-semibold">mTLS Agent Identity</td>
+                            <td class="py-5 px-6 bg-primary/5 border-x border-primary/20">
+                                <div class="flex items-center gap-2 text-emerald-400 font-bold"><span
+                                        class="material-symbols-outlined">check_circle</span> Built-in</div>
+                            </td>
+                            <td class="py-5 px-6 text-slate-500">Manual Setup</td>
+                            <td class="py-5 px-6 text-slate-500">Manual Setup</td>
+                        </tr>
+                        <tr>
+                            <td class="py-5 px-6 font-semibold">OPA Policy Engine</td>
+                            <td class="py-5 px-6 bg-primary/5 border-x border-primary/20">
+                                <div class="flex items-center gap-2 text-emerald-400 font-bold"><span
+                                        class="material-symbols-outlined">check_circle</span> Native</div>
+                            </td>
+                            <td class="py-5 px-6 text-slate-500">Complex Setup</td>
+                            <td class="py-5 px-6 text-slate-500">Complex Setup</td>
+                        </tr>
+                        <tr>
+                            <td class="py-5 px-6 font-semibold">Native MCP Protocol</td>
+                            <td class="py-5 px-6 bg-primary/5 border-x border-primary/20 rounded-b-2xl border-b">
+                                <div class="flex items-center gap-2 text-emerald-400 font-bold"><span
+                                        class="material-symbols-outlined">check_circle</span> First-class</div>
+                            </td>
+                            <td class="py-5 px-6 text-slate-500">No</td>
+                            <td class="py-5 px-6 text-slate-500">No</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="py-24" id="use-cases">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-16">
+                <h2 class="text-4xl font-black mb-4">Built for Enterprise AI Workflows</h2>
+                <p class="text-slate-600 dark:text-slate-400 max-w-3xl">AI agents are powerful — but without guardrails,
+                    they're a liability. Veilgate lets you define <strong class="text-white">exactly which agents can
+                        access which tools</strong>, what data they can see, and what actions they can perform — all
+                    without slowing down your teams.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Use Case 1 -->
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm fade-in">
+                    <div
+                        class="h-48 w-full bg-gradient-to-br from-primary/30 to-blue-900/40 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-white text-6xl">code</span>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-xl font-bold mb-4">GitHub Copilot + Internal Tools</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">Let developer AI
+                            agents query Jira, search Confluence, and trigger CI/CD — while Veilgate controls
+                            <em>which</em> repos they can access and ensures no secrets leak back to the LLM.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-2 text-xs font-medium text-primary"><span
+                                    class="material-symbols-outlined text-sm">check_circle</span> Agent can read
+                                tickets, not delete them</li>
+                            <li class="flex items-center gap-2 text-xs font-medium text-primary"><span
+                                    class="material-symbols-outlined text-sm">check_circle</span> Secrets auto-redacted
+                                from responses</li>
+                            <li class="flex items-center gap-2 text-xs font-medium text-primary"><span
+                                    class="material-symbols-outlined text-sm">check_circle</span> Agent never sees real
+                                API tokens</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Use Case 2 -->
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm fade-in">
+                    <div
+                        class="h-48 w-full bg-gradient-to-br from-primary/30 to-emerald-900/40 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-white text-6xl">security</span>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-xl font-bold mb-4">SOC AI Automation</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">AI security agents
+                            can triage alerts and query threat intel — but Veilgate enforces <em>read-only</em> access
+                            to SIEM data and logs every action for your compliance team.</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-2 text-xs font-medium text-primary"><span
+                                    class="material-symbols-outlined text-sm">check_circle</span> Agent can query, not
+                                modify or delete</li>
+                            <li class="flex items-center gap-2 text-xs font-medium text-primary"><span
+                                    class="material-symbols-outlined text-sm">check_circle</span> Every agent action
+                                logged to SIEM</li>
+                            <li class="flex items-center gap-2 text-xs font-medium text-primary"><span
+                                    class="material-symbols-outlined text-sm">check_circle</span> PII stripped before
+                                reaching the model</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Use Case 3 -->
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm fade-in">
+                    <div
+                        class="h-48 w-full bg-gradient-to-br from-primary/30 to-rose-900/40 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-white text-6xl">assured_workload</span>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-xl font-bold mb-4">Regulated Industries</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">Healthcare and
+                            finance teams can deploy AI agents knowing Veilgate enforces <em>who</em> each agent is,
+                            <em>what</em> it can touch, and <em>guarantees</em> patient/customer data never reaches the
+                            model.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-2 text-xs font-medium text-primary"><span
+                                    class="material-symbols-outlined text-sm">check_circle</span> Per-agent identity via
+                                mTLS certificates</li>
+                            <li class="flex items-center gap-2 text-xs font-medium text-primary"><span
+                                    class="material-symbols-outlined text-sm">check_circle</span> Patient/customer PII
+                                auto-redacted</li>
+                            <li class="flex items-center gap-2 text-xs font-medium text-primary"><span
+                                    class="material-symbols-outlined text-sm">check_circle</span> SOC 2 / HIPAA / GDPR
+                                audit-ready logs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Deep Dive -->
+    <section class="py-24 bg-slate-50 dark:bg-background-dark/50" id="architecture">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-black mb-6">Enterprise-Grade Architecture</h2>
+                <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Built in Go for speed, security, and
+                    simplicity. Deploys anywhere your infrastructure runs.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-12 items-start">
+                <div class="space-y-5">
+                    <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-primary/5 transition-colors">
+                        <span class="material-symbols-outlined text-emerald-400 mt-0.5">check_circle</span>
+                        <div>
+                            <h4 class="font-bold mb-1">Single Binary, Zero Dependencies</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Written in Go — compiles to one ~10MB
+                                binary. No runtime, no Java, no Node.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-primary/5 transition-colors">
+                        <span class="material-symbols-outlined text-emerald-400 mt-0.5">check_circle</span>
+                        <div>
+                            <h4 class="font-bold mb-1">SSE + Stdio MCP Transport</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Supports both Server-Sent Events for
+                                real-time streaming and Stdio adapters for legacy CLI-based MCP servers.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-primary/5 transition-colors">
+                        <span class="material-symbols-outlined text-emerald-400 mt-0.5">check_circle</span>
+                        <div>
+                            <h4 class="font-bold mb-1">Hot-Reloadable Configuration</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Update upstreams, policies, and DLP
+                                rules in YAML — no restart required.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-primary/5 transition-colors">
+                        <span class="material-symbols-outlined text-emerald-400 mt-0.5">check_circle</span>
+                        <div>
+                            <h4 class="font-bold mb-1">Pluggable Policy Engine</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Choose local JSON policies for
+                                simplicity, or connect to a remote Open Policy Agent for enterprise-scale rules.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-5">
+                    <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-primary/5 transition-colors">
+                        <span class="material-symbols-outlined text-emerald-400 mt-0.5">check_circle</span>
+                        <div>
+                            <h4 class="font-bold mb-1">Kubernetes-Ready</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Helm charts included. Deploy to EKS,
+                                GKE, or AKS in minutes with mTLS-enabled service mesh support.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-primary/5 transition-colors">
+                        <span class="material-symbols-outlined text-emerald-400 mt-0.5">check_circle</span>
+                        <div>
+                            <h4 class="font-bold mb-1">Docker Compose for POC</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">One command to spin up the entire
+                                gateway stack locally for rapid evaluation.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-primary/5 transition-colors">
+                        <span class="material-symbols-outlined text-emerald-400 mt-0.5">check_circle</span>
+                        <div>
+                            <h4 class="font-bold mb-1">Redis-Backed Distributed Cache</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Multi-instance deployments with shared
+                                tool cache and rate-limit state via Redis.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-primary/5 transition-colors">
+                        <span class="material-symbols-outlined text-emerald-400 mt-0.5">check_circle</span>
+                        <div>
+                            <h4 class="font-bold mb-1">Compliance-Ready Logging</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Structured JSON-L audit logs ready for
+                                Splunk, Datadog, or any SIEM. SOC 2, HIPAA, GDPR mapped controls.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-black mb-12">Why Security Teams Choose Veilgate</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="glass-card p-6 rounded-xl">
+                    <span class="material-symbols-outlined text-primary text-3xl mb-3">engineering</span>
+                    <p class="text-sm font-semibold">Built by Enterprise Security Engineers</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl">
+                    <span class="material-symbols-outlined text-primary text-3xl mb-3">lock</span>
+                    <p class="text-sm font-semibold">SOC 2 Ready · HIPAA Ready · GDPR Ready</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl">
+                    <span class="material-symbols-outlined text-primary text-3xl mb-3">code</span>
+                    <p class="text-sm font-semibold">Open-Source Core with Enterprise Support</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl">
+                    <span class="material-symbols-outlined text-primary text-3xl mb-3">devices</span>
+                    <p class="text-sm font-semibold">Works with Copilot, Cursor, Claude & All MCP Clients</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interest Registration Form -->
+    <section class="py-24 bg-slate-50 dark:bg-background-dark/50" id="register">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-black mb-4">Ready to Secure Your AI Agents?</h2>
+                <p class="text-slate-600 dark:text-slate-400">Register your interest and we'll reach out with a
+                    personalized demo and early access.</p>
+            </div>
+
+            <div class="glass-card rounded-3xl p-8 md:p-12 form-container" id="form-container">
+                <!-- Interest Form -->
+                <form id="interest-form" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" required
+                                class="w-full px-4 py-3 rounded-xl bg-slate-800/50 border border-primary/20 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                placeholder="Jane Smith" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" for="email">Work Email *</label>
+                            <input type="email" id="email" name="email" required
+                                class="w-full px-4 py-3 rounded-xl bg-slate-800/50 border border-primary/20 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                placeholder="jane@company.com" />
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" for="company">Company Name *</label>
+                            <input type="text" id="company" name="company" required
+                                class="w-full px-4 py-3 rounded-xl bg-slate-800/50 border border-primary/20 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                placeholder="Acme Corp" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" for="title">Job Title / Role *</label>
+                            <input type="text" id="title" name="title" required
+                                class="w-full px-4 py-3 rounded-xl bg-slate-800/50 border border-primary/20 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                placeholder="CISO / Security Architect" />
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" for="team-size">Number of AI Agent
+                                Users</label>
+                            <select id="team-size" name="team_size"
+                                class="w-full px-4 py-3 rounded-xl bg-slate-800/50 border border-primary/20 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="">Select...</option>
+                                <option value="1-10">1 – 10</option>
+                                <option value="11-50">11 – 50</option>
+                                <option value="51-200">51 – 200</option>
+                                <option value="200+">200+</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" for="use-case">Primary Use Case</label>
+                            <select id="use-case" name="use_case"
+                                class="w-full px-4 py-3 rounded-xl bg-slate-800/50 border border-primary/20 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="">Select...</option>
+                                <option value="developer-productivity">Developer Productivity</option>
+                                <option value="security-automation">Security Automation</option>
+                                <option value="compliance">Compliance</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2" for="message">Anything else you'd like to
+                            share?</label>
+                        <textarea id="message" name="message" rows="3"
+                            class="w-full px-4 py-3 rounded-xl bg-slate-800/50 border border-primary/20 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                            placeholder="Tell us about your use case..."></textarea>
+                    </div>
+                    <button type="submit" id="submit-btn"
+                        class="w-full py-4 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl text-lg transition-all shadow-xl shadow-primary/30 flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined">rocket_launch</span>
+                        Register Interest
+                    </button>
+                    <p class="text-xs text-center text-slate-500">We'll never share your information. Response within 24
+                        hours.</p>
+                </form>
+
+                <!-- Success Message -->
+                <div class="form-success flex-col items-center justify-center text-center py-16 space-y-4">
+                    <span class="material-symbols-outlined text-emerald-400 text-6xl">check_circle</span>
+                    <h3 class="text-2xl font-bold">Thanks for your interest!</h3>
+                    <p class="text-slate-400">We'll be in touch within 24 hours with next steps.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Footer -->
+    <section class="py-16 border-t border-primary/10" id="contact">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+                <div>
+                    <h2 class="text-3xl font-black mb-6">Get in Touch</h2>
+                    <p class="text-slate-600 dark:text-slate-400 mb-8">Have questions about Veilgate? Want a
+                        personalized walkthrough? Reach out directly.</p>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                                <span class="material-symbols-outlined text-primary">person</span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500 uppercase tracking-widest font-bold">Founder</p>
+                                <p class="font-bold text-lg">Sauransh Singh</p>
+                            </div>
+                        </div>
+                        <a href="https://linkedin.com/in/sauransh-singh" target="_blank"
+                            class="flex items-center gap-4 group hover:bg-primary/5 p-3 rounded-xl transition-colors -ml-3">
+                            <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500 uppercase tracking-widest font-bold">LinkedIn</p>
+                                <p class="font-semibold group-hover:text-primary transition-colors">
+                                    linkedin.com/in/sauransh-singh</p>
+                            </div>
+                        </a>
+                        <a href="mailto:ssauransh@gmail.com"
+                            class="flex items-center gap-4 group hover:bg-primary/5 p-3 rounded-xl transition-colors -ml-3">
+                            <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                                <span class="material-symbols-outlined text-primary">mail</span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500 uppercase tracking-widest font-bold">Email</p>
+                                <p class="font-semibold group-hover:text-primary transition-colors">ssauransh@gmail.com
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="glass-card rounded-3xl p-12 text-center">
+                    <span class="material-symbols-outlined text-primary text-6xl mb-6">shield</span>
+                    <h3 class="text-2xl font-black mb-2">Shyld</h3>
+                    <p class="text-primary font-bold tracking-widest text-sm uppercase mb-4">Veilgate</p>
+                    <p class="text-slate-500 text-sm">Enterprise Security for the AI Agent Era</p>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="border-t border-primary/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-slate-500">© 2026 Shyld. All rights reserved.</p>
+                <div class="flex gap-6 text-sm text-slate-500">
+                    <a href="#" class="hover:text-primary transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-primary transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- JavaScript: Form Handling + Scroll Animations -->
+    <script>
+        // ============================================
+        // FORM SUBMISSION — CHOOSE YOUR BACKEND BELOW
+        // ============================================
+        //
+        // OPTION 1: Google Sheets (Free, Recommended)
+        //   1. Create a Google Sheet
+        //   2. Go to Extensions → Apps Script
+        //   3. Paste this code in the Apps Script editor:
+        //
+        //   function doPost(e) {
+        //     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+        //     var data = JSON.parse(e.postData.contents);
+        //     sheet.appendRow([
+        //       new Date(),
+        //       data.name,
+        //       data.email,
+        //       data.company,
+        //       data.title,
+        //       data.team_size,
+        //       data.use_case,
+        //       data.message
+        //     ]);
+        //     return ContentService.createTextOutput(JSON.stringify({status: "ok"}))
+        //       .setMimeType(ContentService.MimeType.JSON);
+        //   }
+        //
+        //   4. Deploy → New Deployment → Web App → Anyone can access
+        //   5. Copy the URL and paste it below as GOOGLE_SCRIPT_URL
+        //
+        // OPTION 2: Formspree (Free tier: 50 submissions/month)
+        //   1. Go to https://formspree.io and create an account
+        //   2. Create a new form, get your endpoint ID
+        //   3. Set FORM_ENDPOINT below to "https://formspree.io/f/YOUR_ID"
+        //
+        // ============================================
+
+        // ⬇️ PASTE YOUR ENDPOINT URL HERE ⬇️
+        const FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbyBUcGN8JiOwjA6Qr17VjueDCYIxY9yyl6WyXVJvON98DjX5vwTa0FRVWignWTamItllQ/exec";  // e.g. "https://script.google.com/macros/s/XXXXX/exec" or "https://formspree.io/f/XXXXX"
+
+        const form = document.getElementById('interest-form');
+        const formContainer = document.getElementById('form-container');
+        const submitBtn = document.getElementById('submit-btn');
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                company: document.getElementById('company').value,
+                title: document.getElementById('title').value,
+                team_size: document.getElementById('team-size').value,
+                use_case: document.getElementById('use-case').value,
+                message: document.getElementById('message').value,
+                submitted_at: new Date().toISOString()
+            };
+
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> Submitting...';
+
+            try {
+                if (FORM_ENDPOINT) {
+                    // Send to configured backend
+                    await fetch(FORM_ENDPOINT, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData),
+                        mode: 'no-cors' // Required for Google Apps Script
+                    });
+                } else {
+                    // Fallback: Save to localStorage + send via mailto
+                    const existing = JSON.parse(localStorage.getItem('veilgate_interests') || '[]');
+                    existing.push(formData);
+                    localStorage.setItem('veilgate_interests', JSON.stringify(existing));
+                    console.log('📋 Form saved to localStorage (no backend configured):', formData);
+                    console.log('💡 To view all registrations, run: JSON.parse(localStorage.getItem("veilgate_interests"))');
+                }
+
+                // Show success
+                formContainer.classList.add('submitted');
+            } catch (err) {
+                console.error('Form submission error:', err);
+                // Still show success to user (data saved locally)
+                formContainer.classList.add('submitted');
+            }
+        });
+
+        // ============================================
+        // SCROLL ANIMATION — Fade in cards on scroll
+        // ============================================
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // ============================================
+        // SMOOTH SCROLL for anchor links
+        // ============================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Close mobile menu if open
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
